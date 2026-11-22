@@ -1,0 +1,54 @@
+{
+  "title": "WARTRACE creative token reference (design values, not imported schema)",
+  "status": "proposed",
+  "colors": {
+    "ink": "#111715",
+    "raisedInk": "#1B241F",
+    "agedCanvas": "#D6CAB0",
+    "paper": "#EFE9DA",
+    "brass": "#C4A46D",
+    "fogOlive": "#75806F",
+    "signalRust": "#C57B4B",
+    "slate": "#4A5A56",
+    "deepCloud": "#2C3735",
+    "paleHorizon": "#AAB4A4"
+  },
+  "typography": {
+    "displayCandidate": "Barlow Condensed",
+    "displayLicense": "SIL OFL 1.1, check bundled notice",
+    "uiCandidate": "IBM Plex Sans or system-ui; confirm file license before bundling",
+    "bodyMinMobilePx": 16,
+    "captionMinMobilePx": 13,
+    "numeric": "tabular-nums"
+  },
+  "scene": {
+    "logicalWidth": 960,
+    "logicalHeight": 540,
+    "preferredTileSizePx": 32,
+    "parallaxSpeeds": {
+      "sky": 0.05,
+      "horizon": 0.12,
+      "fog": 0.2,
+      "mid": 0.45,
+      "ground": 1.0,
+      "foreground": 1.15
+    },
+    "maxFirstInteractiveArtTransferKB": 1536,
+    "targetFPSMobile": 30,
+    "targetFPSDesktop": 60
+  },
+  "marketing": {
+    "square": [
+      1200,
+      1200
+    ],
+    "openGraph": [
+      1200,
+      630
+    ],
+    "vertical": [
+      1080,
+      1920
+    ]
+  }
+}
