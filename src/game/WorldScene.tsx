@@ -8,6 +8,8 @@ type Props = {
   distanceM: number;
   rare?: boolean;
   reducedMotion: boolean;
+  /** Changing this value jumps the camera straight to `distanceM` (Skip Animation). */
+  skipKey?: number;
   onTravelDone?: () => void;
   onRenderer?: (info: { type: "pixi" | "svg-fallback"; reason?: string }) => void;
   className?: string;
@@ -25,7 +27,7 @@ function webglAvailable(): boolean {
 class WebglUnavailable extends Error {}
 
 /** Pixi renders the world; HTML owns every control. The SVG still frame is shown while Pixi loads and as the GPU-free fallback. */
-export function WorldScene({ distanceM, rare, reducedMotion, onTravelDone, onRenderer, className }: Props) {
+export function WorldScene({ distanceM, rare, reducedMotion, skipKey = 0, onTravelDone, onRenderer, className }: Props) {
   const host = useRef<HTMLDivElement>(null);
   const handle = useRef<SceneHandle | null>(null);
   const [mode, setMode] = useState<"loading" | "pixi" | "svg">("loading");
@@ -81,6 +83,12 @@ export function WorldScene({ distanceM, rare, reducedMotion, onTravelDone, onRen
       return () => clearTimeout(t);
     }
   }, [distanceM, rare, mode, reducedMotion]);
+
+  useEffect(() => {
+    if (skipKey > 0) handle.current?.travelTo(distanceM, { instant: true });
+    // Only a new skip request should jump; distance changes are animated above.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [skipKey]);
 
   const still = useMemo(() => sceneSvg({ offsetM: mode === "svg" ? distanceM : initialDistance, width: 960 }), [mode, distanceM, initialDistance]);
 

@@ -11,6 +11,7 @@ export const TILE_W = LOGICAL_W * 2;
 export const PATH_Y = 452;
 /** Logical pixels the camera moves per game-world metre (ground layer). */
 export const PX_PER_METRE = 1;
+export const TARGET_FPS = { mobile: tokens.scene.targetFPSMobile, desktop: tokens.scene.targetFPSDesktop };
 
 export const C = {
   ink: tokens.colors.ink,

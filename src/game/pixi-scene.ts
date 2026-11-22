@@ -1,5 +1,5 @@
 import type { Application, Container, Graphics, TilingSprite } from "pixi.js";
-import { LANDMARKS, LOGICAL_H, LOGICAL_W, PATH_Y, PX_PER_METRE, TILE_W, C, courierParts, landmarkPrims, sceneLayers, type Prim } from "./art/scene-spec";
+import { LANDMARKS, LOGICAL_H, LOGICAL_W, PATH_Y, PX_PER_METRE, TARGET_FPS, TILE_W, C, courierParts, landmarkPrims, sceneLayers, type Prim } from "./art/scene-spec";
 
 export type SceneHandle = {
   travelTo: (distanceM: number, opts?: { rare?: boolean; instant?: boolean }) => Promise<void>;
@@ -25,18 +25,21 @@ function draw(g: Graphics, prims: Prim[]) {
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 export async function createPixiScene(host: HTMLElement, opts: { initialDistanceM: number; reducedMotion: boolean }): Promise<SceneHandle> {
-  const PIXI = await import("pixi.js");
+  // The CSP forbids unsafe-eval; this shim swaps Pixi's generated shader/uniform code for static implementations.
+  const [PIXI] = await Promise.all([import("pixi.js"), import("pixi.js/unsafe-eval")]);
   const isSmall = Math.min(window.innerWidth, window.innerHeight) < 600;
   const app: Application = new PIXI.Application();
   await app.init({
     resizeTo: host,
     backgroundAlpha: 0,
     antialias: false,
-    resolution: Math.min(window.devicePixelRatio || 1, isSmall ? 1.5 : 2),
+    // Half-resolution pixel art gains nothing from high DPR; CSS nearest-neighbour scaling keeps it crisp.
+    resolution: 1,
     autoDensity: true,
     preference: "webgl",
     powerPreference: "low-power",
   });
+  app.ticker.maxFPS = isSmall ? TARGET_FPS.mobile : TARGET_FPS.desktop;
   app.canvas.setAttribute("aria-hidden", "true");
   app.canvas.style.display = "block";
   host.appendChild(app.canvas);

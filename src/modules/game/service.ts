@@ -410,6 +410,36 @@ export async function getPublicResult(db: Executor, shareToken: string): Promise
   };
 }
 
+/**
+ * Evidence page for an entity. Gated to entities this guest has already locked, so the
+ * explorer can never be used to enumerate a live answer bank.
+ */
+export async function getEntityEvidenceForGuest(db: DB, guestId: string, entityId: string) {
+  const [row] = await db
+    .select({ round: runRounds, run: gameRuns })
+    .from(runRounds)
+    .innerJoin(gameRuns, eq(gameRuns.id, runRounds.runId))
+    .where(and(eq(gameRuns.guestSessionId, guestId), eq(runRounds.chosenEntityId, entityId)))
+    .limit(1);
+  if (!row) return null;
+  const snap = await loadSnapshot(db, row.run.operationId);
+  const q = questionFor(snap, row.round.roundIndex);
+  const a = q.answers.find((x) => x.entityId === entityId);
+  if (!a) return null;
+  return {
+    canonicalName: a.canonicalName,
+    disambiguation: a.disambiguation,
+    tier: a.tier,
+    inclusionRationale: a.inclusionRationale,
+    evidenceStatus: a.evidenceStatus,
+    prompt: q.prompt,
+    topic: q.topic,
+    dateKey: snap.dateKey,
+    contentClass: snap.contentClass,
+    evidence: sourceCardsFor(a).map((s, i) => ({ ...s, retrievedAt: a.evidence[i]?.retrievedAt ?? null })),
+  };
+}
+
 export async function getOwnRunView(db: DB, runId: string, cfg: GameConfig) {
   return buildRunView(db, runId, cfg);
 }
