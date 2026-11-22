@@ -1,0 +1,54 @@
+{
+  "name": "wartrace-game",
+  "version": "0.1.0",
+  "private": true,
+  "description": "WARTRACE — a source-backed daily historical knowledge expedition (working title).",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:security": "vitest run tests/integration/security.test.ts",
+    "test:e2e": "playwright test",
+    "test:a11y": "playwright test tests/e2e/a11y.spec.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx scripts/db-migrate.ts",
+    "db:seed:demo": "tsx scripts/seed-demo.ts",
+    "content:lint": "tsx scripts/content-lint.ts",
+    "content:verify": "tsx scripts/content-verify.ts",
+    "content:publish": "tsx scripts/content-publish.ts",
+    "assets:lint": "tsx scripts/assets-lint.ts",
+    "assets:hash": "tsx scripts/assets-lint.ts --write-hashes"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.17",
+    "drizzle-orm": "0.45.4",
+    "next": "16.4.6",
+    "pg": "8.23.1",
+    "pixi.js": "8.23.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "server-only": "0.0.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.65.1",
+    "@types/node": "22.20.5",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "drizzle-kit": "0.31.11",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.6",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "vitest": "5.1.1"
+  }
+}
