@@ -1,0 +1,220 @@
+{
+  "_warning": "DEMO_ONLY_UNVERIFIED_FIXTURE_DO_NOT_PUBLISH",
+  "dateKey": "2099-01-01",
+  "title": "Operation Fogline \u2014 Development Fixture",
+  "timezone": "America/New_York",
+  "sceneKey": "western-front-demo",
+  "status": "experimental_not_publishable",
+  "questionCount": 7,
+  "secondsPerRound": 25,
+  "scoringVersion": {
+    "identifier": "wartrace-rarity-v1",
+    "points": "100+round(900*(rarity_score**1.3))",
+    "distance_m": "round(points*0.8)"
+  },
+  "questions": [
+    {
+      "roundIndex": 1,
+      "category": "Aircraft",
+      "prompt": "Name a sample aircraft model from the demo registry.",
+      "eligibility": "ONLY sample fictional entities specifically tagged to this fixture. Not historical facts.",
+      "dataStatus": "fictional_demo_only",
+      "acceptedAnswers": [
+        {
+          "entityId": "demo-1-alpha",
+          "canonicalName": "Demo Aircraft Alpha",
+          "aliases": [
+            "Demo Aircraft Alpha",
+            "Aircraft Alpha"
+          ],
+          "rarityScore": 0.15
+        },
+        {
+          "entityId": "demo-1-omega",
+          "canonicalName": "Demo Aircraft Omega",
+          "aliases": [
+            "Demo Aircraft Omega",
+            "Aircraft Omega"
+          ],
+          "rarityScore": 0.88
+        }
+      ],
+      "evidence": [],
+      "verified": false
+    },
+    {
+      "roundIndex": 2,
+      "category": "Ships",
+      "prompt": "Name a sample ship from the demo registry.",
+      "eligibility": "ONLY sample fictional entities specifically tagged to this fixture. Not historical facts.",
+      "dataStatus": "fictional_demo_only",
+      "acceptedAnswers": [
+        {
+          "entityId": "demo-2-alpha",
+          "canonicalName": "Demo Ships Alpha",
+          "aliases": [
+            "Demo Ships Alpha",
+            "Ships Alpha"
+          ],
+          "rarityScore": 0.15
+        },
+        {
+          "entityId": "demo-2-omega",
+          "canonicalName": "Demo Ships Omega",
+          "aliases": [
+            "Demo Ships Omega",
+            "Ships Omega"
+          ],
+          "rarityScore": 0.88
+        }
+      ],
+      "evidence": [],
+      "verified": false
+    },
+    {
+      "roundIndex": 3,
+      "category": "Tanks",
+      "prompt": "Name a sample armored vehicle from the demo registry.",
+      "eligibility": "ONLY sample fictional entities specifically tagged to this fixture. Not historical facts.",
+      "dataStatus": "fictional_demo_only",
+      "acceptedAnswers": [
+        {
+          "entityId": "demo-3-alpha",
+          "canonicalName": "Demo Tanks Alpha",
+          "aliases": [
+            "Demo Tanks Alpha",
+            "Tanks Alpha"
+          ],
+          "rarityScore": 0.15
+        },
+        {
+          "entityId": "demo-3-omega",
+          "canonicalName": "Demo Tanks Omega",
+          "aliases": [
+            "Demo Tanks Omega",
+            "Tanks Omega"
+          ],
+          "rarityScore": 0.88
+        }
+      ],
+      "evidence": [],
+      "verified": false
+    },
+    {
+      "roundIndex": 4,
+      "category": "Explorers",
+      "prompt": "Name a sample historical expedition from the demo registry.",
+      "eligibility": "ONLY sample fictional entities specifically tagged to this fixture. Not historical facts.",
+      "dataStatus": "fictional_demo_only",
+      "acceptedAnswers": [
+        {
+          "entityId": "demo-4-alpha",
+          "canonicalName": "Demo Explorers Alpha",
+          "aliases": [
+            "Demo Explorers Alpha",
+            "Explorers Alpha"
+          ],
+          "rarityScore": 0.15
+        },
+        {
+          "entityId": "demo-4-omega",
+          "canonicalName": "Demo Explorers Omega",
+          "aliases": [
+            "Demo Explorers Omega",
+            "Explorers Omega"
+          ],
+          "rarityScore": 0.88
+        }
+      ],
+      "evidence": [],
+      "verified": false
+    },
+    {
+      "roundIndex": 5,
+      "category": "Engineers",
+      "prompt": "Name a sample military engineer from the demo registry.",
+      "eligibility": "ONLY sample fictional entities specifically tagged to this fixture. Not historical facts.",
+      "dataStatus": "fictional_demo_only",
+      "acceptedAnswers": [
+        {
+          "entityId": "demo-5-alpha",
+          "canonicalName": "Demo Engineers Alpha",
+          "aliases": [
+            "Demo Engineers Alpha",
+            "Engineers Alpha"
+          ],
+          "rarityScore": 0.15
+        },
+        {
+          "entityId": "demo-5-omega",
+          "canonicalName": "Demo Engineers Omega",
+          "aliases": [
+            "Demo Engineers Omega",
+            "Engineers Omega"
+          ],
+          "rarityScore": 0.88
+        }
+      ],
+      "evidence": [],
+      "verified": false
+    },
+    {
+      "roundIndex": 6,
+      "category": "Inventions",
+      "prompt": "Name a sample communications invention from the demo registry.",
+      "eligibility": "ONLY sample fictional entities specifically tagged to this fixture. Not historical facts.",
+      "dataStatus": "fictional_demo_only",
+      "acceptedAnswers": [
+        {
+          "entityId": "demo-6-alpha",
+          "canonicalName": "Demo Inventions Alpha",
+          "aliases": [
+            "Demo Inventions Alpha",
+            "Inventions Alpha"
+          ],
+          "rarityScore": 0.15
+        },
+        {
+          "entityId": "demo-6-omega",
+          "canonicalName": "Demo Inventions Omega",
+          "aliases": [
+            "Demo Inventions Omega",
+            "Inventions Omega"
+          ],
+          "rarityScore": 0.88
+        }
+      ],
+      "evidence": [],
+      "verified": false
+    },
+    {
+      "roundIndex": 7,
+      "category": "Places",
+      "prompt": "Name a sample fortification from the demo registry.",
+      "eligibility": "ONLY sample fictional entities specifically tagged to this fixture. Not historical facts.",
+      "dataStatus": "fictional_demo_only",
+      "acceptedAnswers": [
+        {
+          "entityId": "demo-7-alpha",
+          "canonicalName": "Demo Places Alpha",
+          "aliases": [
+            "Demo Places Alpha",
+            "Places Alpha"
+          ],
+          "rarityScore": 0.15
+        },
+        {
+          "entityId": "demo-7-omega",
+          "canonicalName": "Demo Places Omega",
+          "aliases": [
+            "Demo Places Omega",
+            "Places Omega"
+          ],
+          "rarityScore": 0.88
+        }
+      ],
+      "evidence": [],
+      "verified": false
+    }
+  ]
+}

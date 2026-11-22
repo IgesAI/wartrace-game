@@ -1,0 +1,235 @@
+openapi: 3.1.0
+info:
+  title: WARTRACE Player and Editorial API (starter contract)
+  version: 1.0.0
+  description: >
+    Specification for coding agent implementation. Server is authoritative.
+    No eligible answer lists or rarity tables may be sent before daily close.
+servers:
+  - url: /api/v1
+security: []
+tags:
+  - name: Public
+  - name: Game
+  - name: Editorial
+paths:
+  /daily:
+    get:
+      tags: [Public]
+      summary: Get the current published challenge teaser and prompt metadata
+      responses:
+        '200':
+          description: Current daily operation
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/DailyResponse'}
+        '503': {$ref: '#/components/responses/Unavailable'}
+  /runs:
+    post:
+      tags: [Game]
+      summary: Create or recover a guest run for today's operation
+      description: Guest is identified by signed HttpOnly cookie. Idempotent per guest/operation.
+      responses:
+        '200':
+          description: Current run state
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RunResponse'}
+        '429': {$ref: '#/components/responses/TooMany'}
+  /runs/{runId}:
+    get:
+      tags: [Game]
+      summary: Recover authorized guest's run state
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Run state
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/RunResponse'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /runs/{runId}/rounds/{roundIndex}/open:
+    post:
+      tags: [Game]
+      summary: Start a round and server deadline exactly once
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+        - $ref: '#/components/parameters/RoundIndex'
+      responses:
+        '200':
+          description: Open round with prompt and deadline
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/OpenRoundResponse'}
+        '409': {$ref: '#/components/responses/Conflict'}
+  /runs/{runId}/rounds/{roundIndex}/submit:
+    post:
+      tags: [Game]
+      summary: Atomically lock exactly one answer for a round
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+        - $ref: '#/components/parameters/RoundIndex'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [answer, idempotencyKey]
+              properties:
+                answer: {type: string, maxLength: 120}
+                idempotencyKey: {type: string, format: uuid}
+      responses:
+        '200':
+          description: Authoritative locked result; replay same idempotency returns identical result
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/SubmittedRoundResponse'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '429': {$ref: '#/components/responses/TooMany'}
+  /results/{shareToken}:
+    get:
+      tags: [Public]
+      summary: Sanitized public result; no private session identity
+      parameters:
+        - name: shareToken
+          in: path
+          required: true
+          schema: {type: string, minLength: 20, maxLength: 100}
+      responses:
+        '200':
+          description: Public result
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PublicResult'}
+        '404': {$ref: '#/components/responses/NotFound'}
+  /appeals:
+    post:
+      tags: [Game]
+      summary: Submit a historically grounded missing-answer appeal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [runRoundId, category, explanation]
+              properties:
+                runRoundId: {type: string, format: uuid}
+                category: {type: string, enum: [missing_valid_answer, ambiguous_alias, incorrect_source, other]}
+                explanation: {type: string, minLength: 10, maxLength: 3000}
+                evidenceUrl: {type: string, format: uri, maxLength: 2048}
+      responses:
+        '201': {description: Appeal submitted for review}
+        '429': {$ref: '#/components/responses/TooMany'}
+  /admin/questions:
+    get:
+      tags: [Editorial]
+      summary: Reviewer-only questions and evidence queue
+      security: [{AdminSession: []}]
+      responses:
+        '200': {description: Authorized content queue}
+        '403': {$ref: '#/components/responses/Forbidden'}
+  /admin/operations/{operationId}/publish:
+    post:
+      tags: [Editorial]
+      summary: Publish pre-approved reviewed 7-question snapshot, audit logged
+      security: [{AdminSession: []}]
+      parameters:
+        - name: operationId
+          in: path
+          required: true
+          schema: {type: string, format: uuid}
+      responses:
+        '200': {description: Published immutable operation}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+components:
+  securitySchemes:
+    AdminSession:
+      type: apiKey
+      in: cookie
+      name: wartrace_admin_session
+      description: Secure backend-managed login session; not user-created
+  parameters:
+    RunId:
+      name: runId
+      in: path
+      required: true
+      schema: {type: string, format: uuid}
+    RoundIndex:
+      name: roundIndex
+      in: path
+      required: true
+      schema: {type: integer, minimum: 1, maximum: 7}
+  responses:
+    Unavailable:
+      description: No reviewed daily operation currently ready
+    TooMany:
+      description: Rate limited
+    Forbidden:
+      description: Unauthorized or inaccessible resource
+    NotFound:
+      description: Resource not found
+    Conflict:
+      description: Round was locked or cannot enter requested state
+  schemas:
+    DailyResponse:
+      type: object
+      required: [dateKey, operationId, title, questionCount, timezone]
+      properties:
+        dateKey: {type: string, format: date}
+        operationId: {type: string, format: uuid}
+        title: {type: string}
+        questionCount: {type: integer, const: 7}
+        timezone: {type: string, const: America/New_York}
+        sceneKey: {type: string}
+    RunResponse:
+      type: object
+      required: [runId, state, currentRound, score, distanceM]
+      properties:
+        runId: {type: string, format: uuid}
+        state: {type: string, enum: [created, active, completed, invalidated]}
+        currentRound: {type: integer, minimum: 1, maximum: 8}
+        score: {type: integer, minimum: 0, maximum: 7000}
+        distanceM: {type: integer, minimum: 0, maximum: 5600}
+    OpenRoundResponse:
+      type: object
+      required: [roundIndex, prompt, deadlineAt, serverNow]
+      properties:
+        roundIndex: {type: integer, minimum: 1, maximum: 7}
+        prompt: {type: string}
+        deadlineAt: {type: string, format: date-time}
+        serverNow: {type: string, format: date-time}
+    SubmittedRoundResponse:
+      type: object
+      required: [outcome, points, distanceM, totalScore, totalDistanceM]
+      properties:
+        outcome: {type: string, enum: [valid, invalid, timed_out, ambiguous]}
+        canonicalName: {type: [string, 'null']}
+        tier: {type: [string, 'null']}
+        points: {type: integer, minimum: 0, maximum: 1000}
+        distanceM: {type: integer, minimum: 0, maximum: 800}
+        totalScore: {type: integer, minimum: 0, maximum: 7000}
+        totalDistanceM: {type: integer, minimum: 0, maximum: 5600}
+        sourceCards:
+          type: array
+          items:
+            type: object
+            properties:
+              title: {type: string}
+              publisher: {type: string}
+              url: {type: string, format: uri}
+    PublicResult:
+      type: object
+      required: [dateKey, score, distanceM, roundsCorrect, challengeUrl]
+      properties:
+        dateKey: {type: string, format: date}
+        score: {type: integer}
+        distanceM: {type: integer}
+        roundsCorrect: {type: integer, minimum: 0, maximum: 7}
+        displayName: {type: [string, 'null']}
+        challengeUrl: {type: string}

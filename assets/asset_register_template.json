@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "purpose": "Do not add unapproved assets to production; this is a schema illustration.",
+  "assets": [
+    {
+      "asset_id": "SCENE-WF-SKY",
+      "title": "Original sky parallax layer",
+      "creator": null,
+      "source_url": null,
+      "source_collection": "planned-original",
+      "license_id": null,
+      "license_url": null,
+      "license_text_snapshot_path": null,
+      "retrieved_at": null,
+      "sha256": null,
+      "rights_status": "not_acquired",
+      "commercial_ok": false,
+      "derivative_ok": false,
+      "in_game_ok": false,
+      "marketing_export_ok": false,
+      "credit_required": null,
+      "credit_text": null,
+      "historical_source_ids": [],
+      "approved_for_release": false,
+      "reviewed_by": null,
+      "reviewed_at": null,
+      "notes": "Original commissioned/created asset; enter license and hash before shipping."
+    }
+  ]
+}

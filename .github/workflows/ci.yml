@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - name: Unit + integration (PGlite, real migrations and triggers)
+        run: npm test
+      - name: Asset register (non-production gate)
+        run: npm run assets:lint
+      - run: npm run build
+      - name: T-048 no server secrets in client bundle
+        run: "! grep -rlE 'GUEST_COOKIE_SIGNING_SECRET|ADMIN_AUTH_SECRET|DATABASE_URL|_password' .next/static"
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: E2E, accessibility and responsive
+        run: npm run test:e2e
+        env:
+          CI: "true"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7
+
+  postgres:
+    # Proves migrations and triggers apply to a real Postgres server, not only PGlite.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: wartrace
+          POSTGRES_PASSWORD: ci_only_password
+          POSTGRES_DB: wartrace_ci
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U wartrace -d wartrace_ci" --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://wartrace:ci_only_password@localhost:5432/wartrace_ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run db:migrate
+      - run: npm run db:seed:demo
+      - name: Readiness report (demo content is expected to be demo-waivable only)
+        run: npm run content:lint
+      - name: Verify frozen snapshot checksum for today (America/New_York)
+        run: npm run content:verify -- --date "$(TZ=America/New_York date +%F)"
