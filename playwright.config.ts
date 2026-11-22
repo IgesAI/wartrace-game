@@ -32,6 +32,8 @@ export default defineConfig({
       WARTRACE_DEPLOY_ENV: "local",
       GAME_DEV_FIXTURE_MODE: "true",
       PGLITE_DATA_DIR: "memory://",
+      // Set E2E_DATABASE_URL to run the suite against a real (pre-migrated, demo-seeded) Postgres.
+      DATABASE_URL: process.env.E2E_DATABASE_URL ?? "",
       ANALYTICS_ENABLED: "false",
     },
   },

@@ -1152,6 +1152,11 @@ label {
   padding: var(--space-5) var(--space-4) var(--space-7);
   display: grid;
   gap: var(--space-5);
+  overflow-wrap: anywhere;
+}
+
+.admin-main > * {
+  min-width: 0;
 }
 
 .admin-main h1 {

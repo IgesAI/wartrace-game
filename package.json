@@ -24,7 +24,8 @@
     "content:verify": "tsx scripts/content-verify.ts",
     "content:publish": "tsx scripts/content-publish.ts",
     "assets:lint": "tsx scripts/assets-lint.ts",
-    "assets:hash": "tsx scripts/assets-lint.ts --write-hashes"
+    "assets:hash": "tsx scripts/assets-lint.ts --write-hashes",
+    "source:wikidata": "tsx scripts/source-wikidata.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "0.5.17",
