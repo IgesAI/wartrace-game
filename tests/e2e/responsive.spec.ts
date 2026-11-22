@@ -14,6 +14,7 @@ test.describe("responsive layouts", () => {
 
   for (const vp of VIEWPORTS) {
     test(`${vp.name}: no horizontal scroll, prompt and timer visible, captures screens`, async ({ browser }) => {
+      test.setTimeout(240_000);
       const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, deviceScaleFactor: 1 });
       const page = await ctx.newPage();
       const shot = (name: string) => page.screenshot({ path: path.join(ARTIFACTS, `${vp.name}-${name}.png`) });
@@ -31,6 +32,7 @@ test.describe("responsive layouts", () => {
       await playRound(page);
       await page.waitForTimeout(1300);
       await shot("03-reveal");
+      await page.emulateMedia({ reducedMotion: "reduce" });
       for (let round = 2; round <= 7; round++) {
         await advance(page);
         await playRound(page);

@@ -21,7 +21,8 @@ export default defineConfig({
   },
   projects: [
     { name: "mobile", use: { ...devices["Pixel 7"], viewport: { width: 375, height: 812 } }, testIgnore: /responsive\.spec\.ts/ },
-    { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } }, testMatch: /(a11y|responsive)\.spec\.ts/ },
+    // Large viewports render the canvas in software on GPU-less CI runners.
+    { name: "desktop", timeout: 180_000, use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } }, testMatch: /(a11y|responsive)\.spec\.ts/ },
   ],
   webServer: {
     command: `npx next start -p ${PORT}`,
