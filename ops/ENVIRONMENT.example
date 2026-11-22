@@ -1,0 +1,17 @@
+# Reference keys. The coding agent must implement actual validation and choose real provider names.
+# NEVER put real values in repository or screenshots.
+DATABASE_URL=postgresql://wartrace:local_only_password@localhost:5432/wartrace_dev
+GUEST_COOKIE_SIGNING_SECRET=REPLACE_WITH_LONG_RANDOM_SECRET
+ADMIN_AUTH_PROVIDER=development_mock_only
+ADMIN_AUTH_SECRET=REPLACE_WITH_LONG_RANDOM_SECRET
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+GAME_TIME_ZONE=America/New_York
+GAME_DEV_FIXTURE_MODE=true
+SCENE_ASSET_BASE_PATH=/worlds/western-front
+# Optional public-data source credentials; leave blank to run manual/local fixtures.
+NARA_API_KEY=
+SMITHSONIAN_API_KEY=
+# Optional analytics and diagnostics; no data sent without configured consent.
+ANALYTICS_ENABLED=false
+ERROR_MONITORING_DSN=
+# Production must block demo seed content and development admin auth.

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "_privacy": "DO_NOT_INCLUDE_RAW_ANSWERS_IP_EMAIL_OR_GUEST_SECRET",
+  "commonProperties": {
+    "appVersion": "string",
+    "anonymousBucket": "random rotatable string",
+    "challengeDate": "date",
+    "clientEventId": "uuid"
+  },
+  "events": {
+    "game_started": {
+      "required": [
+        "challengeDate",
+        "platform"
+      ]
+    },
+    "round_started": {
+      "required": [
+        "roundIndex",
+        "category"
+      ]
+    },
+    "answer_submitted": {
+      "required": [
+        "roundIndex",
+        "outcome",
+        "score",
+        "distanceM",
+        "elapsedMsBucket"
+      ]
+    },
+    "game_completed": {
+      "required": [
+        "score",
+        "distanceM",
+        "roundsCorrect"
+      ]
+    },
+    "share_intent": {
+      "required": [
+        "medium"
+      ]
+    },
+    "challenge_link_opened": {
+      "required": [
+        "challengeDate",
+        "channel"
+      ]
+    },
+    "referral_game_started": {
+      "required": [
+        "challengeDate"
+      ]
+    },
+    "answer_appeal_submitted": {
+      "required": [
+        "category"
+      ]
+    },
+    "renderer_fallback_used": {
+      "required": [
+        "reason"
+      ]
+    }
+  },
+  "enums": {
+    "outcome": [
+      "valid",
+      "invalid",
+      "timed_out",
+      "ambiguous"
+    ],
+    "medium": [
+      "copy_link",
+      "native_share",
+      "download_card",
+      "download_video"
+    ]
+  }
+}

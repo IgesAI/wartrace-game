@@ -1,0 +1,65 @@
+{
+  "version": "wartrace-rarity-v1",
+  "rounding": "Math.round (nonnegative only)",
+  "cases": [
+    {
+      "rarityScore": 0,
+      "points": 100,
+      "distanceM": 80,
+      "tier": "Common"
+    },
+    {
+      "rarityScore": 0.15,
+      "points": 176,
+      "distanceM": 141,
+      "tier": "Common"
+    },
+    {
+      "rarityScore": 0.249999,
+      "points": 248,
+      "distanceM": 198,
+      "tier": "Common"
+    },
+    {
+      "rarityScore": 0.25,
+      "points": 248,
+      "distanceM": 198,
+      "tier": "Curious"
+    },
+    {
+      "rarityScore": 0.5,
+      "points": 466,
+      "distanceM": 373,
+      "tier": "Uncommon"
+    },
+    {
+      "rarityScore": 0.749999,
+      "points": 719,
+      "distanceM": 575,
+      "tier": "Uncommon"
+    },
+    {
+      "rarityScore": 0.75,
+      "points": 719,
+      "distanceM": 575,
+      "tier": "Obscure"
+    },
+    {
+      "rarityScore": 0.88,
+      "points": 862,
+      "distanceM": 690,
+      "tier": "Obscure"
+    },
+    {
+      "rarityScore": 1,
+      "points": 1000,
+      "distanceM": 800,
+      "tier": "Obscure"
+    }
+  ],
+  "invalidOutcome": {
+    "points": 0,
+    "distanceM": 0,
+    "tier": "None"
+  }
+}

@@ -1,0 +1,2 @@
+# WARTRACE - Agent Instructions
+This file is intentionally brief to prevent conflicting instructions. Use `MASTER_AGENT_PROMPT.md` for the full mandate and `AGENTS.md` for shared cross-agent rules. Read the complete `/docs` bundle before implementation. Implement an actual game, not only a plan. If needed, split work into UI/game, backend, editorial data and QA workstreams, but maintain a single canonical scoring and publication contract. Mark the app NOT LAUNCH READY unless all P0 release gates have evidence.
